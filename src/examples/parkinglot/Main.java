@@ -38,7 +38,6 @@ public class Main {
         // Step 3: Exit Flow
         System.out.println("\n--- EXIT ---");
 
-
         // Initialize ExitGate with ticket and strategy
         ExitGate exitGate = new ExitGate();
 
