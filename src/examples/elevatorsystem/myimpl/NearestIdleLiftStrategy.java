@@ -1,4 +1,4 @@
-package examples.elevatorsystem.ownimpl;
+package examples.elevatorsystem.myimpl;
 
 import java.util.List;
 

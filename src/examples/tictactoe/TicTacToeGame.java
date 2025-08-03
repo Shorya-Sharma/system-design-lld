@@ -1,5 +1,6 @@
 package examples.tictactoe;
 
+import examples.snakeladder.myimpl.Pair;
 import examples.tictactoe.Model.*;
 
 

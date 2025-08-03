@@ -1,4 +1,4 @@
-package examples.elevatorsystem.ownimpl;
+package examples.elevatorsystem.myimpl;
 
 public class Floor {
     private final int floorNo;

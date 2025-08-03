@@ -1,6 +1,8 @@
 package examples.tictactoe.Model;
 
 
+import examples.snakeladder.myimpl.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 
