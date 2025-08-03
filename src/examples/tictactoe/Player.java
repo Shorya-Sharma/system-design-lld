@@ -1,5 +1,4 @@
-package examples.snakeladder;
-
+package examples.tictactoe;
 
 public class Player {
 
@@ -11,5 +10,5 @@ public class Player {
         this.currentPosition = currentPosition;
     }
 
-    //getters and setters
+    // getters and setters
 }

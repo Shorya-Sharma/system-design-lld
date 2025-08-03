@@ -1,5 +1,4 @@
-package examples.snakeladder;
-
+package examples.tictactoe;
 
 public class Main {
 
