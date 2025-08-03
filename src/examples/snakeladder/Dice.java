@@ -1,4 +1,4 @@
-package examples.tictactoe;
+package examples.snakeladder;
 
 import java.util.concurrent.ThreadLocalRandom;
 
