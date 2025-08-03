@@ -1,7 +1,5 @@
 package examples.parkinglot;
 
-import java.time.LocalDateTime;
-
 public class Main {
     public static void main(String[] args) {
         // Step 1: Setup - create and register some parking spots
