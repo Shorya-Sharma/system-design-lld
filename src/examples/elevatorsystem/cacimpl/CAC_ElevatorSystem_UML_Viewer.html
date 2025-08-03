@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAC Elevator System - UML Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .legend h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .legend ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .legend li {
+            margin-bottom: 8px;
+            padding: 5px 0;
+        }
+
+        .legend strong {
+            color: #007bff;
+        }
+
+        .system-flow {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f5e8;
+            border-radius: 5px;
+        }
+
+        .system-flow h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .design-patterns {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff3cd;
+            border-radius: 5px;
+        }
+
+        .design-patterns h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .architecture-diff {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8d7da;
+            border-radius: 5px;
+        }
+
+        .architecture-diff h3 {
+            color: #721c24;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>CAC Elevator System - UML Class Diagram</h1>
+
+        <div class="mermaid">
+            classDiagram
+            %% Enums
+            class Direction {
+            <<enumeration>>
+                UP
+                DOWN
+                }
+
+                class ElevatorState {
+                <<enumeration>>
+                    MOVING
+                    IDLE
+                    }
+
+                    %% Core Building and Floor Classes
+                    class Building {
+                    -List~Floor~ floorList
+                    +Building(List~Floor~ floors)
+                    +addFloors(Floor)
+                    +removeFloors(Floor)
+                    +getAllFloorList() List~Floor~
+                    }
+
+                    class Floor {
+                    -int floorNumber
+                    -ExternalDispatcher externalDispatcher
+                    +Floor(int floorNumber)
+                    +pressButton(Direction)
+                    }
+
+                    %% Elevator Components
+                    class ElevatorCar {
+                    -int id
+                    -ElevatorDisplay display
+                    -InternalButtons internalButtons
+                    -ElevatorState elevatorState
+                    -int currentFloor
+                    -Direction elevatorDirection
+                    -ElevatorDoor elevatorDoor
+                    +ElevatorCar()
+                    +showDisplay()
+                    +pressButton(int)
+                    +setDisplay()
+                    +moveElevator(Direction, int) boolean
+                    }
+
+                    class ElevatorController {
+                    -PriorityQueue~Integer~ upMinPQ
+                    -PriorityQueue~Integer~ downMaxPQ
+                    -ElevatorCar elevatorCar
+                    +ElevatorController(ElevatorCar)
+                    +submitExternalRequest(int, Direction)
+                    +submitInternalRequest(int)
+                    +controlElevator()
+                    }
+
+                    %% Dispatcher Classes
+                    class ExternalDispatcher {
+                    -List~ElevatorController~ elevatorControllerList
+                    +submitExternalRequest(int, Direction)
+                    }
+
+                    class InternalDispatcher {
+                    -List~ElevatorController~ elevatorControllerList
+                    +submitInternalRequest(int, ElevatorCar)
+                    }
+
+                    %% Creator/Factory Class
+                    class ElevatorCreator {
+                    +static List~ElevatorController~ elevatorControllerList
+                    +static { initialization block }
+                    }
+
+                    %% Elevator Components
+                    class ElevatorDisplay {
+                    -int floor
+                    -Direction direction
+                    +setDisplay(int, Direction)
+                    +showDisplay()
+                    }
+
+                    class ElevatorDoor {
+                    +openDoor()
+                    +closeDoor()
+                    }
+
+                    class InternalButtons {
+                    -InternalDispatcher dispatcher
+                    -int[] availableButtons
+                    -int buttonSelected
+                    +pressButton(int, ElevatorCar)
+                    }
+
+                    %% Relationships
+
+                    %% Composition Relationships (strong ownership)
+                    Building *-- Floor : contains
+                    ElevatorCar *-- ElevatorDisplay : has
+                    ElevatorCar *-- InternalButtons : has
+                    ElevatorCar *-- ElevatorDoor : has
+                    ElevatorController *-- ElevatorCar : controls
+
+                    %% Aggregation Relationships (weak ownership)
+                    Floor o-- ExternalDispatcher : uses
+                    InternalButtons o-- InternalDispatcher : uses
+                    ExternalDispatcher o-- ElevatorController : manages
+                    InternalDispatcher o-- ElevatorController : manages
+
+                    %% Association Relationships
+                    Building --> Floor : manages
+                    Floor --> ExternalDispatcher : requests
+                    InternalButtons --> InternalDispatcher : requests
+                    ElevatorCar --> ElevatorController : controlled by
+
+                    %% Factory/Creation Relationships
+                    ElevatorCreator --> ElevatorCar : creates
+                    ElevatorCreator --> ElevatorController : creates
+                    ExternalDispatcher --> ElevatorCreator : accesses
+                    InternalDispatcher --> ElevatorCreator : accesses
+
+                    %% Dependency Relationships
+                    ElevatorCar ..> Direction : uses
+                    ElevatorCar ..> ElevatorState : uses
+                    ElevatorController ..> Direction : manages
+                    ElevatorController ..> PriorityQueue : uses
+                    Floor ..> Direction : specifies
+        </div>
+
+        <div class="legend">
+            <h3>Legend - Relationship Types:</h3>
+            <ul>
+                <li><strong>*--</strong> : Composition (strong ownership, lifecycle dependency)</li>
+                <li><strong>o--</strong> : Aggregation (weak ownership, independent lifecycle)</li>
+                <li><strong>--></strong> : Association (uses/creates relationship)</li>
+                <li><strong>..></strong> : Dependency (temporary relationship)</li>
+            </ul>
+
+            <h3>Core Components:</h3>
+            <ul>
+                <li><strong>Building</strong>: Main container that holds all floors</li>
+                <li><strong>Floor</strong>: Represents a building floor with external button functionality</li>
+                <li><strong>ElevatorCar</strong>: Represents an elevator with all its components</li>
+                <li><strong>ElevatorController</strong>: Controls individual elevator movement and state</li>
+                <li><strong>ExternalDispatcher</strong>: Handles external button requests from floors</li>
+                <li><strong>InternalDispatcher</strong>: Handles internal button requests from elevator</li>
+                <li><strong>ElevatorCreator</strong>: Factory class that creates elevators and controllers</li>
+            </ul>
+        </div>
+
+        <div class="design-patterns">
+            <h3>Design Patterns Used:</h3>
+            <ul>
+                <li><strong>Factory Pattern</strong>: ElevatorCreator creates elevators and controllers</li>
+                <li><strong>Dispatcher Pattern</strong>: External and Internal dispatchers handle requests</li>
+                <li><strong>Composition Pattern</strong>: ElevatorCar composes all elevator components</li>
+                <li><strong>Priority Queue Pattern</strong>: ElevatorController uses priority queues for requests</li>
+                <li><strong>Singleton-like Pattern</strong>: ElevatorCreator maintains static list of controllers</li>
+            </ul>
+        </div>
+
+        <div class="system-flow">
+            <h3>System Flow:</h3>
+            <ol>
+                <li><strong>External Request</strong>: User presses button on a floor</li>
+                <li><strong>Floor Request</strong>: Floor submits request to ExternalDispatcher</li>
+                <li><strong>Dispatcher Logic</strong>: ExternalDispatcher routes request to appropriate elevator</li>
+                <li><strong>Controller Processing</strong>: ElevatorController processes the request</li>
+                <li><strong>Internal Request</strong>: User presses internal button in elevator</li>
+                <li><strong>Internal Processing</strong>: InternalButtons submit request to InternalDispatcher</li>
+                <li><strong>Movement Control</strong>: ElevatorController controls elevator movement</li>
+            </ol>
+
+            <h3>Key Features:</h3>
+            <ul>
+                <li><strong>Multiple Elevators</strong>: System supports multiple elevators</li>
+                <li><strong>Even-Odd Routing</strong>: ExternalDispatcher uses even-odd logic for routing</li>
+                <li><strong>Priority Queues</strong>: Controllers use priority queues for efficient request handling
+                </li>
+                <li><strong>Component Separation</strong>: Clear separation between external and internal requests</li>
+                <li><strong>Factory Pattern</strong>: Centralized creation of elevators and controllers</li>
+            </ul>
+        </div>
+
+        <div class="architecture-diff">
+            <h3>Architecture Differences from Own Implementation:</h3>
+            <ul>
+                <li><strong>Dispatcher Pattern</strong>: Uses separate dispatchers for external and internal requests
+                </li>
+                <li><strong>Factory Pattern</strong>: ElevatorCreator centralizes object creation</li>
+                <li><strong>Priority Queues</strong>: More sophisticated request handling with priority queues</li>
+                <li><strong>Even-Odd Routing</strong>: Simple routing strategy based on elevator and floor numbers</li>
+                <li><strong>Component-based</strong>: ElevatorCar is composed of multiple components</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+
+</html>
