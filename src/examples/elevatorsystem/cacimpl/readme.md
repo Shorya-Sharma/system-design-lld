@@ -71,7 +71,7 @@ classDiagram
     %% Creator/Factory Class
     class ElevatorCreator {
         +static List~ElevatorController~ elevatorControllerList
-        +static { initialization block }
+        +static initialize()
     }
 
     %% Elevator Components
