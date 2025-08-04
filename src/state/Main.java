@@ -1,7 +1,7 @@
-package state.cacimpl;
+package state;
 
 
-import state.cacimpl.vendingstates.State;
+import state.vendingstates.State;
 
 public class Main {
 

@@ -1,8 +1,8 @@
-package state.cacimpl;
+package state;
 
 
-import state.cacimpl.vendingstates.State;
-import state.cacimpl.vendingstates.impl.IdleState;
+import state.vendingstates.State;
+import state.vendingstates.impl.IdleState;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
-package state.cacimpl.vendingstates.impl;
+package state.vendingstates.impl;
 
-import state.cacimpl.Coin;
-import state.cacimpl.Item;
-import state.cacimpl.VendingMachine;
-import state.cacimpl.vendingstates.*;
+import state.Coin;
+import state.Item;
+import state.VendingMachine;
+import state.vendingstates.State;
 
 import java.util.ArrayList;
 import java.util.List;
